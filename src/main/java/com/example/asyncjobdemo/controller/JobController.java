@@ -1,6 +1,7 @@
 package com.example.asyncjobdemo.controller;
 
 import com.example.asyncjobdemo.service.job.AsyncJobDataService;
+import com.example.asyncjobdemo.vo.DecorateJobVO;
 import com.example.asyncjobdemo.vo.JobOneVO;
 import com.example.asyncjobdemo.vo.JobTwoVO;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +25,9 @@ public class JobController {
     public Object addJobOne() {
         JobOneVO jobOneVO = new JobOneVO().setId(UUID.randomUUID().toString()).setOneStr("one");
 
-        asyncJobDataService.addData(jobOneVO);
+        //trackId 可以直接配置一个拦截器自动生成  注:MDC底层是ThreadLocal，值只能在当前线程传递
+        String trackId = UUID.randomUUID().toString().replaceAll("-", "");
+        asyncJobDataService.addData(new DecorateJobVO(jobOneVO, trackId));
         return "jobOneVO";
     }
 
@@ -32,7 +35,8 @@ public class JobController {
     public Object addJobTwo() {
         JobTwoVO jobTwoVO = new JobTwoVO().setId(UUID.randomUUID().toString()).setTwoStr("two");
 
-        asyncJobDataService.addData(jobTwoVO);
+        String trackId = UUID.randomUUID().toString().replaceAll("-", "");
+        asyncJobDataService.addData(new DecorateJobVO(jobTwoVO, trackId));
         return "jobTwoVO";
     }
 

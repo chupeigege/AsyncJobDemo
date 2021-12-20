@@ -1,7 +1,9 @@
 package com.example.asyncjobdemo.service.job.impl;
 
+import com.example.asyncjobdemo.constants.Constants;
 import com.example.asyncjobdemo.service.job.IAsyncJob;
 import com.example.asyncjobdemo.vo.JobTwoVO;
+import org.slf4j.MDC;
 import org.springframework.stereotype.Service;
 
 /**
@@ -18,6 +20,7 @@ public class JobTwoServiceImpl implements IAsyncJob<JobTwoVO> {
 
     @Override
     public void execute(JobTwoVO jobTwoVO) {
+        System.out.println("JobTwoVO." + Constants.TRACK_ID + ": " + MDC.get(Constants.TRACK_ID));
         System.out.println("execute jobTwoVO:" + jobTwoVO);
     }
 
